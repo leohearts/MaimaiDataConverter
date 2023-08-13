@@ -91,7 +91,10 @@ def processMaimaiCsv(csvPath, musicNameIdData):
         musicLevel = line[2]
         achievement = line[5]
         deluxscoreMax = line[6]
-        musicId = musicNameIdData[musicName] if isNewVersion else musicNameIdData[musicName + "_Legacy"]
+        try:
+            musicId = musicNameIdData[musicName] if isNewVersion else musicNameIdData[musicName + "_Legacy"]
+        except KeyError as e:
+            logging.error("Error: Missing %s , %s " % (musicName, str(e)))
         logging.debug((musicName, musicId, musicLevel, isNewVersion, achievement, deluxscoreMax))
         targetObj['musicId'] = musicId
         targetObj['level'] = {"Basic": 0, "Advanced": 1, "Expert": 2, "Master": 3, "Re:MASTER": 4}[musicLevel]
